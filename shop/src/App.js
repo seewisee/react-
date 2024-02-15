@@ -6,82 +6,95 @@ import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
-import {a,b} from './data.js';
 import data from './data.js';
+import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
+import Detail from './routes/Detail.js';
 
 function App() {
 
   let [shoes] = useState(data);
+  let navigate = useNavigate();
 
   return (
     <div className="App">
+
+
       
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
           <Navbar.Brand href="#home">내맘대로</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
             <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/detail') }}>Detail</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
+        
+            <Link to = "/">홈</Link>
+            <Link to = "detail">상세페이지</Link>
+
+      <Routes>
+        <Route path = "/" element = {<div className='main-bg'style={{backgroundColor : "gray" }}></div>
+        }></Route>
+        <Route path = "/detail" element = {<Detail/>}></Route>
+        <Route path = "/about/member" element = {<About/>}></Route>
+        <Route path = "/about/location" element = {<About/>}></Route>
+      </Routes>
+
+      <Routes>
+        <Route path = "/event" element = {<EventPage/>}>
+          <Route path = "one" element = {<p>첫 주문 시 양배추즙 서비스</p>}></Route>
+          <Route path = "two" element = {<p>생일기념 쿠폰받기</p>}></Route>
+        </Route>
+      </Routes>
       
-      <div className='main-bg'style={{backgroundColor : "gray" }}></div>
-      
-      {
-        shoes.map(function(a,i){
-          return(
-      <Container>
-      <Row>
-        <Info1 shoes = {shoes}></Info1>
-        <Info2 shoes = {shoes}></Info2>
-        <Info3 shoes = {shoes}></Info3>
-      </Row>
-    </Container>
-
-          );
-        })
-
-      }
-
       
     </div>
   );
 }
 
-function Info1(props, i){
-  return(
-    <Col className='' key = {i}>
-        <img src = "https://codingapple1.github.io/shop/shoes1.jpg" width= "80%"/>
-        <h4>{[props.shoes[0].title]}</h4>
-        <p>{[props.shoes[0].price]}</p>
-        </Col>
+  function About() {
+    return(
+      <div>
+        <h4>회사정보임</h4>
+      </div>
+    )
+  }
 
-  );
-}
+  function EventPage() {
+    return(
+      <div>
+        <h4>오늘의 이벤트</h4>
+        <Outlet></Outlet>
+      </div>
+    )
+  }
 
-function Info2(props){
+        // <Container>
+        // <Row>
+        //   {
+        //     shoes.map(function(a, i){
+        //       return(
+        //         <Card shoes = {shoes[i]} i = {i+1}></Card>
+        //       );
+        //     })
+        //   }
+          
+        // </Row>
+        // </Container>
+
+function Card(props){
   return(
     <Col className=''>
-        <img src = "https://codingapple1.github.io/shop/shoes2.jpg" width= "80%"/>
-        <h4>{[props.shoes[1].title]}</h4>
-        <p>{[props.shoes[1].price]}</p>
+        <img src = {'https://codingapple1.github.io/shop/shoes'+ props.i + '.jpg'} width= "80%"/>
+        <h4>{[props.shoes.title]}</h4>
+        <p>{[props.shoes.price]}</p>
         </Col>
 
   );
 }
 
-function Info3(props){
-  return(
-    <Col className=''>
-        <img src = "https://codingapple1.github.io/shop/shoes3.jpg" width= "80%"/>
-        <h4>{[props.shoes[2].title]}</h4>
-        <p>{[props.shoes[2].price]}</p>
-        </Col>
-
-  );
-}
 
 
 export default App;
